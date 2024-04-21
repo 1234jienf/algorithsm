@@ -20,51 +20,59 @@
 ### 첫째 줄에 안전 거리의 최댓값을 출력한다.
 
 
-from collections import deque
+# from collections import deque
 
 N,M = map(int,input().split())
 arr = [list(map(int,input().split())) for _ in range(N)]
 
 v = [[0] * M for _ in range(N)]
 
-dx = [0,0,1,1,1,-1,-1,-1]
-dy = [1,-1,0,1,-1,1,-1,0]
+# dx = [0,0,1,1,1,-1,-1,-1]
+# dy = [1,-1,0,1,-1,1,-1,0]
 
 
-def check(idx,i,j,f):
-  if f != 0 :
-    for k in range(8):
-      nx = i + dx[k]
-      ny = j + dy[k]
-      if 0 <= nx < N and 0 <= ny < M:
-        if arr[i][j] == 0 and v[i][j] == 0 or v[i][j] > idx:
-          v[i][j] += 1
-          check(idx,i,j)
-        else:
-          if v[i][j] <= idx:
-            return
-  else:
-    for k in range(8):
-      nx = i + dx[k]
-      ny = j + dy[k]
-      if 0 <= nx < N and 0 <= ny < M:
-        if arr[i][j] == 0:
-          v[i][j] += 1
-          check(idx,i,j,f)
-          return
+# def check(idx,i,j,f):
+#   if f != 0 :
+#     for k in range(8):
+#       nx = i + dx[k]
+#       ny = j + dy[k]
+#       if 0 <= nx < N and 0 <= ny < M:
+#         if arr[nx][ny] == 0 and v[nx][ny] == 0 or v[nx][ny] > idx:
+#           v[nx][ny] += 1
+#           check(idx,nx,ny,f)
+#         else:
+#           if v[nx][ny] <= idx:
+#             return
+#   else:
+#     for k in range(8):
+#       nx = i + dx[k]
+#       ny = j + dy[k]
+#       if 0 <= nx < N and 0 <= ny < M:
+#         if arr[nx][ny] == 0:
+#           v[nx][ny] += 1
+#           check(idx,nx,ny,f)
+#           return
 
-      
-a = 0
+check = []
+ans = []
 for i in range(N):
   for j in range(M):
     if arr[i][j] == 1:
-      check(0,i,j,a)
-      a += 1
+      ans.append((i,j))
+      continue
+    else:
+      check.append((i,j))
 
-ans = 0
+for i in range(len(check)):
+  for j in range(len(ans)):
+    if v[check[i][0]][check[i][1]] == 0: 
+      v[check[i][0]][check[i][1]] = min(abs(check[i][0] - ans[j][0]),abs(check[i][1] - ans[j][1])) + max(abs(check[i][0] - ans[j][0]),abs(check[i][1] - ans[j][1])) - min(abs(check[i][0] - ans[j][0]),abs(check[i][1] - ans[j][1]))
+    else:
+      v[check[i][0]][check[i][1]] = min(min(abs(check[i][0] - ans[j][0]),abs(check[i][1] - ans[j][1])) + max(abs(check[i][0] - ans[j][0]),abs(check[i][1] - ans[j][1])) - min(abs(check[i][0] - ans[j][0]),abs(check[i][1] - ans[j][1])),v[check[i][0]][check[i][1]] )
+
+a = 0
 for i in range(N):
   for j in range(M):
-    ans = max(arr[i][j],ans)
+    a = max(a, v[i][j])
 
-print(v)
-print(ans)
+print(a)
