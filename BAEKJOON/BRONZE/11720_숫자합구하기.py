@@ -7,3 +7,4 @@ for num in number:
   cnt += int(num)
 
 print(cnt)
+
