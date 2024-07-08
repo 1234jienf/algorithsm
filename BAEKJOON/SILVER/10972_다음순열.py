@@ -21,7 +21,10 @@ def print_next_per(arr):
 
   return(arr[:i + 1] + sorted(arr[i+1:]))
 
-if print_next_per(arr) != -1:
-  print(" ".join(map(str,print_next_per(arr))))
+result = print_next_per(arr)
+
+# 결과 출력
+if result == -1:
+    print(-1)
 else:
-  print(-1)
+    print(" ".join(map(str, result)))
